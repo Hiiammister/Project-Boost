@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://8w1asulsw3u2"]
+
+[ext_resource type="Script" path="res://level/LandingPad.gd" id="1_uvn31"]
+[ext_resource type="PackedScene" uid="uid://dtab1heellawe" path="res://player.tscn" id="2_4jj2p"]
+[ext_resource type="PackedScene" uid="uid://cebgfpase3ybl" path="res://moving_hazard.tscn" id="3_wwr62"]
+[ext_resource type="PackedScene" uid="uid://dk3tio3upo78t" path="res://background.tscn" id="4_4v6uu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5r1f"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_3xemx"]
+sky_material = SubResource("ProceduralSkyMaterial_d5r1f")
+
+[sub_resource type="Environment" id="Environment_c1h7t"]
+background_mode = 1
+background_color = Color(0.0666667, 0.0196078, 0.00392157, 1)
+sky = SubResource("Sky_3xemx")
+ambient_light_source = 3
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4pyc5"]
+albedo_color = Color(0.26034, 0.354123, 0.661345, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j85ol"]
+albedo_color = Color(0.290129, 0.556208, 0.240602, 1)
+
+[node name="Level" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_c1h7t")
+
+[node name="Launch Pad" type="CSGBox3D" parent="."]
+transform = Transform3D(0.99997, -0.00767937, 0, 0.00767937, 0.99997, 0, 0, 0, 1, -8, -0.26658, 0)
+use_collision = true
+size = Vector3(2, 1, 2)
+material = SubResource("StandardMaterial3D_4pyc5")
+
+[node name="Landing Pad" type="CSGBox3D" parent="." groups=["Goal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -0.192211, 0)
+use_collision = true
+size = Vector3(2, 1, 2)
+material = SubResource("StandardMaterial3D_j85ol")
+script = ExtResource("1_uvn31")
+file_path = "res://level/level.tscn"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.978148, 0.207912, 0, -0.207912, 0.978148, 0, 6.282, 9.33)
+
+[node name="Player" parent="." groups=["Hazard"] instance=ExtResource("2_4jj2p")]
+transform = Transform3D(1, 2.32831e-09, 0, -2.32831e-09, 1, 0, 0, 0, 1, -8, 1.1188, 0)
+thrust = 1000.0
+
+[node name="movingHazard" parent="." instance=ExtResource("3_wwr62")]
+destination = Vector3(0, 2, 0)
+duration = 3.0
+
+[node name="Floor" parent="." instance=ExtResource("4_4v6uu")]
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.205837, 3.09779)
+text = "Level 4"
+font_size = 232
